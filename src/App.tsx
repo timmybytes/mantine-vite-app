@@ -1,42 +1,47 @@
-import { Button, TextInput, Title } from '@mantine/core';
-import { useForm } from '@mantine/hooks';
-import React, { useState } from 'react';
+import { Accordion, AccordionItem, Button, Container, Group, Paper, Text } from '@mantine/core';
+import { useToggle } from '@mantine/hooks';
+import React from 'react';
 import './App.css';
 
-function App() {
-  const [user, setUser] = useState<string>()
+const tracklist: string[] = ['Quagmire', 'Tabs On Your Insides', 'In Your Crime', 'Mammoth & The Rage', 'Thumper', 'Nova Lady Ache', 'And Come Undone', 'Trepidation Highway', 'Simulacrum I', 'Southsea Hants', 'Wear Their Hunger & Their Haunt']
 
-    const form = useForm({
-      initialValues: {
-      name: '',
-      termsOfService: false,
-    },
-  });
+interface ToggleTypes {
+  colorOne: string,
+  colorTwo: string,
+  variant: 'light' | 'filled' | 'outline' | 'link'
+}
+
+function Toggle({colorOne, colorTwo, variant}: ToggleTypes) {
+  const [value, toggle] = useToggle(colorOne, [colorOne, colorTwo]);
 
   return (
-    <div className="App">
-      <main className='container'>
-        <Title>Form</Title>
-        {user && <>
-          <p>Welcome, <strong>{user}</strong>!</p>
-          <Button onClick={() => setUser('')}>Clear User</Button>
-        </>}
-        <form onSubmit={form.onSubmit((values) => {
-          console.log(values);
-          setUser(values.name)
-        })}>
+    <Button variant={variant} color={value} onClick={() => toggle()}>
+      {value}
+    </Button>
+  );
+}
 
-      <TextInput
-        label="Name"
-        value={form.values.name}
-        onChange={(event) => form.setFieldValue('name', event.currentTarget.value)}
-      />
-
-      <Button type="submit">Submit</Button>
-    </form>
-      </main>
-    </div>
+function App() {
+  return (
+      <Container>
+        <Paper padding="xl" shadow="sm">
+          <Text>Paper is the most basic ui component</Text>
+          <Text>
+            Use it to create cards, dropdowns, modals and other components that require background with shadow
+          </Text>
+        </Paper>
+        <Accordion>
+          <AccordionItem label="Simulacra">
+            <Group direction='column'>
+            {tracklist.map((track, idx) => <Text size='sm'>{idx + 1}. {track}</Text>)}
+            </Group>
+          </AccordionItem>
+          <AccordionItem label="Fait Accompli">
+            Configure components appearance and behavior with vast amount of settings or overwrite any part of component styles
+          </AccordionItem>
+        </Accordion>
+      </Container>
   )
 }
 
-export default App
+export default App;
