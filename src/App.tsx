@@ -1,47 +1,43 @@
-import { Accordion, AccordionItem, Button, Container, Group, Paper, Text } from '@mantine/core';
-import { useToggle } from '@mantine/hooks';
+import { Button } from '@mantine/core';
 import React from 'react';
 import './App.css';
+import bookIso from './books.svg';
+import Layout from './components/Layout/Layout';
 
-const tracklist: string[] = ['Quagmire', 'Tabs On Your Insides', 'In Your Crime', 'Mammoth & The Rage', 'Thumper', 'Nova Lady Ache', 'And Come Undone', 'Trepidation Highway', 'Simulacrum I', 'Southsea Hants', 'Wear Their Hunger & Their Haunt']
-
-interface ToggleTypes {
-  colorOne: string,
-  colorTwo: string,
-  variant: 'light' | 'filled' | 'outline' | 'link'
-}
-
-function Toggle({colorOne, colorTwo, variant}: ToggleTypes) {
-  const [value, toggle] = useToggle(colorOne, [colorOne, colorTwo]);
-
+export default function App() {
   return (
-    <Button variant={variant} color={value} onClick={() => toggle()}>
-      {value}
-    </Button>
+    <Layout>
+      <div
+        style={{
+          position: 'absolute',
+          width: '100%',
+          zIndex: 2,
+          maxWidth: '600px',
+        }}>
+        <h1>A new way to do things</h1>
+        <p style={{ fontSize: '1.25rem' }}>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem
+          expedita sit iusto atque aliquam sunt excepturi?
+        </p>
+        <Button size='md' color='violet'>
+          Start Now
+        </Button>
+      </div>
+
+      <img
+        style={{
+          width: '100%',
+          height: 'auto',
+          maxWidth: '200px',
+          right: '25%',
+          top: '29%',
+          position: 'absolute',
+          zIndex: 1,
+          opacity: 0.8,
+        }}
+        src={bookIso}
+        alt='alt'
+      />
+    </Layout>
   );
 }
-
-function App() {
-  return (
-      <Container>
-        <Paper padding="xl" shadow="sm">
-          <Text>Paper is the most basic ui component</Text>
-          <Text>
-            Use it to create cards, dropdowns, modals and other components that require background with shadow
-          </Text>
-        </Paper>
-        <Accordion>
-          <AccordionItem label="Simulacra">
-            <Group direction='column'>
-            {tracklist.map((track, idx) => <Text size='sm'>{idx + 1}. {track}</Text>)}
-            </Group>
-          </AccordionItem>
-          <AccordionItem label="Fait Accompli">
-            Configure components appearance and behavior with vast amount of settings or overwrite any part of component styles
-          </AccordionItem>
-        </Accordion>
-      </Container>
-  )
-}
-
-export default App;
