@@ -5,8 +5,10 @@ import bookIso from './books.svg';
 import Layout from './components/Layout/Layout';
 
 export default function App() {
+  // TODO: Add params to pass to the layout components
   return (
     <Layout>
+      {/* TODO: Move css to a separate file */}
       <div
         style={{
           position: 'absolute',

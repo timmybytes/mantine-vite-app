@@ -1,3 +1,6 @@
+/* TODO: Separate CSS by components */
+/* TODO: Use SCSS */
+
 /* Header */
 .header {
   display: flex;
@@ -64,9 +67,10 @@
 /* Footer */
 .footer {
   display: flex;
+  gap: 5px;
   height: 5vh;
   justify-content: center;
-  font-size: 10px;
+  font-size: 0.7em;
   color: slategray;
   align-items: center;
   width: 100%;
