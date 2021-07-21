@@ -15,7 +15,7 @@ import {
 import { useToggle } from '@mantine/hooks';
 import React, { useState } from 'react';
 import { FiArrowDownCircle } from 'react-icons/fi';
-import './App.css';
+import '../App.scss';
 
 interface ToggleTypes {
   colorOne: string;
