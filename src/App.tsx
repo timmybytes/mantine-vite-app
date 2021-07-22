@@ -10,6 +10,7 @@ import {
   Image,
   Input,
   InputWrapper,
+  Modal,
   Paper,
   SegmentedControl,
   Text,
@@ -18,8 +19,28 @@ import {
   useMantineTheme,
 } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
+import * as EmailValidator from 'email-validator';
 import React, { useState } from 'react';
 import './App.scss';
+
+function ModalExample() {
+  const [opened, setOpened] = useState(false);
+
+  return (
+    <>
+      <Modal
+        opened={opened}
+        onClose={() => setOpened(false)}
+        title='Introduce yourself!'>
+        {/* <AuthenticationForm /> */}
+      </Modal>
+
+      <Group position='center'>
+        <Button onClick={() => setOpened(true)}>Open Modal</Button>
+      </Group>
+    </>
+  );
+}
 
 function CardExample() {
   const theme = useMantineTheme();
@@ -86,10 +107,98 @@ const links: NavLinks[] = [
   },
 ];
 
+const ContactForm = () => {
+  const [value, setValue] = useState('general');
+  const [nameValue, setNameValue] = useState('');
+  const [emailValue, setEmailValue] = useState('');
+  const [textValue, setTextValue] = useState('');
+  const [opened, setOpened] = useState(false);
+
+  const CONTACT_CATEGORIES = [
+    { label: 'General', value: 'general' },
+    { label: 'Hire Us', value: 'hire' },
+    { label: 'Collaborate', value: 'collaborate' },
+  ];
+  return (
+    <Paper>
+      <SegmentedControl
+        value={value}
+        onChange={setValue}
+        data={CONTACT_CATEGORIES}
+        style={{ marginBottom: 20 }}
+      />
+      <InputWrapper
+        id='input-name'
+        label='Name'
+        description='What should we call you?'
+        style={{ marginBottom: 20 }}>
+        <Input
+          id='input-name'
+          placeholder='E.g., Bob'
+          value={nameValue}
+          // @ts-ignore
+          onChange={e => setNameValue(e.target.value)}
+        />
+      </InputWrapper>
+      <InputWrapper
+        id='input-email'
+        label='Email'
+        description="Please enter a valid email address. We don't spam, but we don't do bots either."
+        error={
+          EmailValidator.validate(emailValue)
+            ? ''
+            : 'Please enter a valid email address'
+        }
+        required
+        style={{ marginBottom: 20 }}>
+        <Input
+          id='input-demo'
+          placeholder='someone@something.com '
+          value={emailValue}
+          // @ts-ignore
+          onChange={e => setEmailValue(e.target.value)}
+        />
+      </InputWrapper>
+      <Textarea
+        label='Message'
+        required
+        error={!textValue && 'Required'}
+        style={{ marginBottom: 20 }}
+        value={textValue}
+        // @ts-ignore
+        onChange={e => setTextValue(e.target.value)}
+      />
+      <Button
+        variant='light'
+        color={value === 'general' ? 'green' : 'red'}
+        style={{ marginBottom: 20 }}
+        disabled={value === 'general' ? false : true}
+        onClick={() => setOpened(true)}>
+        Submit
+      </Button>
+      {opened && (
+        <Modal
+          opened={opened}
+          onClose={() => setOpened(false)}
+          title={nameValue ? <h1>Thanks, ${nameValue}!</h1> : <h1>Thanks!</h1>}
+          closeButtonLabel='Close authentication modal'>
+          <Text style={{ marginBottom: '1rem' }}>
+            We'll get back to you as soon as we can.
+          </Text>
+          <Text style={{ marginBottom: '1rem' }}>
+            In the meantime, you can check our FAQ for more information, or see
+            what we do in our showcase.
+          </Text>
+        </Modal>
+      )}
+    </Paper>
+  );
+};
+
 export default function App() {
   const isMobile = useMediaQuery('(max-width: 755px)');
   const span = isMobile ? 12 : 4;
-  const [value, setValue] = useState('general');
+
   return (
     <>
       <Container size={950}>
@@ -131,22 +240,28 @@ export default function App() {
             </nav>
           </Paper>
         </Group>
-        <Group style={{}}>
+        <Group>
           <Paper shadow='md' padding='xl'>
             <Title order={2} style={{ margin: '1rem 0' }} id='about'>
               About
             </Title>
-            <Text>
+            <Text style={{ margin: '1rem 0' }}>
               Lorem ipsum, dolor sit amet consectetur adipisicing elit. Placeat
               itaque esse consequuntur, ratione quidem voluptatem corrupti, sed
               consectetur vero, repudiandae at a amet nihil aut ducimus fugiat.
               Eligendi, iure quo.
             </Text>
-            <Text>
+            <Text style={{ margin: '1rem 0' }}>
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil
               sunt aperiam ut, provident accusamus reprehenderit laboriosam
               recusandae. Autem eius accusamus a recusandae sed, quidem illo.
               Assumenda cupiditate esse voluptas praesentium.
+            </Text>
+            <Text style={{ margin: '1rem 0' }}>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda
+              voluptates, doloremque eveniet atque exercitationem dolores vel
+              natus ipsam? Omnis nesciunt maxime, illo ab repudiandae modi dolor
+              iure doloribus assumenda tenetur?
             </Text>
           </Paper>
         </Group>
@@ -187,47 +302,7 @@ export default function App() {
             <Title order={2} style={{ margin: '1rem 0' }} id='contact'>
               Contact
             </Title>
-            <SegmentedControl
-              value={value}
-              onChange={setValue}
-              data={[
-                { label: 'General', value: 'general' },
-                { label: 'Booking', value: 'booking' },
-                { label: 'Collaborate', value: 'collaborate' },
-              ]}
-              style={{ marginBottom: 20 }}
-            />
-            <InputWrapper
-              id='input-name'
-              // TODO: Separate aria-hidden label
-              label='Your name'
-              description='Enter a name'
-              style={{ marginBottom: 20 }}>
-              <Input id='input-demo' placeholder='Your email' />
-            </InputWrapper>
-            <InputWrapper
-              id='input-email'
-              // TODO: Separate aria-hidden label
-              label='Your email'
-              description="Please enter a valid email address. We don't spam, but we don't do bots either."
-              // error='This email is not valid'
-              required
-              style={{ marginBottom: 20 }}>
-              <Input id='input-demo' placeholder='Your email' />
-            </InputWrapper>
-            <Textarea
-              placeholder='Be the ball, throw yourself.'
-              label='Your message'
-              required
-              style={{ marginBottom: 20 }}
-            />
-            <Button
-              variant='light'
-              color={value === 'general' ? 'green' : 'red'}
-              style={{ marginBottom: 20 }}
-              disabled={value === 'general' ? false : true}>
-              Submit
-            </Button>
+            <ContactForm />
           </Paper>
         </Group>
       </Container>
