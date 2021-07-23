@@ -83,8 +83,14 @@ export const Form = () => {
       {opened && (
         <Modal
           opened={opened}
-          onClose={() => setOpened(false)}
-          title={nameValue ? <h1>Thanks, ${nameValue}!</h1> : <h1>Thanks!</h1>}
+          onClose={() => {
+            setTextValue('');
+            setValue('');
+            setNameValue('');
+            setEmailValue('');
+            setOpened(false);
+          }}
+          title={nameValue ? <h1>Thanks, {nameValue}!</h1> : <h1>Thanks!</h1>}
           closeButtonLabel='Close authentication modal'>
           <Text style={{ marginBottom: '1rem' }}>
             We'll get back to you as soon as we can.
